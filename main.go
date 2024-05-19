@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func init() { // INITIALIZERS
+func init() { // INITIALIZERS TO LOAD
 	initializers.LoadEnvVariables()
 	initializers.ConnectToDB()
 }
