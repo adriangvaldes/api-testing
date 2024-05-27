@@ -4,6 +4,7 @@ import (
 	"github.com/adriangvaldes/api-testing/controllers"
 	"github.com/adriangvaldes/api-testing/initializers"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 )
 
 func init() { // INITIALIZERS TO LOAD
@@ -14,11 +15,22 @@ func init() { // INITIALIZERS TO LOAD
 func main() {
 	r := gin.Default()
 
-	r.POST("/posts", controllers.PostsCreate)
-	r.GET("/posts", controllers.PostIndex)
-	r.GET("/posts/:id", controllers.PostsShow)
-	r.PUT("/posts/:id", controllers.PostsUpdate)
-	r.DELETE("/posts/:id", controllers.PostsDelete)
+	// POSTS ROUTES
+	postRoutes := r.Group("/posts")
+	postRoutes.POST("/", controllers.PostsCreate)
+	postRoutes.GET("/", controllers.PostIndex)
+	postRoutes.GET("/:id", controllers.PostsShow)
+	postRoutes.PUT("/:id", controllers.PostsUpdate)
+	postRoutes.DELETE("/:id", controllers.PostsDelete)
+
+	validate := validator.New()
+	authController := controllers.NewAuthControllerImpl(initializers.DB, validate)
+
+	// AUTH ROUTES
+	authRoutes := r.Group("/auth")
+	authRoutes.POST("/register", authController.Register)
+	authRoutes.POST("/login", authController.Login)
 
 	r.Run()
+
 }
