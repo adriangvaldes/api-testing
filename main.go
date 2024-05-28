@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/adriangvaldes/api-testing/controllers"
 	"github.com/adriangvaldes/api-testing/initializers"
+	"github.com/adriangvaldes/api-testing/middlewares"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
@@ -17,6 +18,7 @@ func main() {
 
 	// POSTS ROUTES
 	postRoutes := r.Group("/posts")
+	postRoutes.Use(middlewares.JwtAuthMiddleware())
 	postRoutes.POST("/", controllers.PostsCreate)
 	postRoutes.GET("/", controllers.PostIndex)
 	postRoutes.GET("/:id", controllers.PostsShow)

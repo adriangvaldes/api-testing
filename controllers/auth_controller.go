@@ -81,7 +81,7 @@ func (c AuthController) Login(ctx *gin.Context) {
 		return
 	}
 
-	token, err := helper.CreateToken(existingUser.Email)
+	token, err := helper.CreateToken(existingUser.ID)
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "JWT Error"})
